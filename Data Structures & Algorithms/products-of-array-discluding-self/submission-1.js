@@ -4,27 +4,22 @@ class Solution {
      * @return {number[]}
      */
     productExceptSelf(nums) {
-        let prefixProducts = [];
-        let suffixProducts = [];
+        let leftProducts = [];
+        let rightProducts = [];
         let result = [];
 
         for (let i = 0; i < nums.length; i++) {
-            let preCurr = 1;
-            let sufCurr = 1;
+            let leftProduct = i === 0 ? 1 : leftProducts[i-1] * nums[i - 1];
+            let rightProduct = i === 0 ? 1 : rightProducts[i-1] * nums[nums.length - i];
             
-            if (i > 0) {
-                preCurr = prefixProducts[i - 1] * nums[i - 1];
-                sufCurr = suffixProducts[i - 1] * nums[nums.length - i];
-            }
-
-            prefixProducts.push(preCurr);
-            suffixProducts.push(sufCurr);
+            leftProducts.push(leftProduct);
+            rightProducts.push(rightProduct);
         }
-        
-        suffixProducts.reverse();
+
+        rightProducts.reverse();
 
         for (let i = 0; i < nums.length; i++) {
-            result.push(prefixProducts[i] * suffixProducts[i]);
+            result.push(leftProducts[i] * rightProducts[i]);
         }
 
         return result;
